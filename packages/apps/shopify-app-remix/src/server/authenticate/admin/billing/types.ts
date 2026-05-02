@@ -6,11 +6,11 @@ import {
   UsageRecord,
 } from '@shopify/shopify-api';
 
-import {ApiFutureFlags} from '../../../future/flags';
 import type {AppConfigArg} from '../../../config-types';
 
-export interface RequireBillingOptions<Config extends AppConfigArg>
-  extends Omit<BillingCheckParams, 'session' | 'plans' | 'returnObject'> {
+export interface RequireBillingOptions<
+  Config extends AppConfigArg,
+> extends Omit<BillingCheckParams, 'session' | 'plans' | 'returnObject'> {
   /**
    * The plans to check for. Must be one of the values defined in the `billing` config option.
    */
@@ -21,19 +21,19 @@ export interface RequireBillingOptions<Config extends AppConfigArg>
   onFailure: (error: any) => Promise<Response>;
 }
 
-export interface CheckBillingOptions<Config extends AppConfigArg>
-  extends Omit<BillingCheckParams, 'session' | 'plans' | 'returnObject'> {
+export interface CheckBillingOptions<Config extends AppConfigArg> extends Omit<
+  BillingCheckParams,
+  'session' | 'plans' | 'returnObject'
+> {
   /**
    * The plans to check for. Must be one of the values defined in the `billing` config option.
    */
   plans?: (keyof Config['billing'])[];
 }
 
-export interface RequestBillingOptions<Config extends AppConfigArg>
-  extends Omit<
-    BillingRequestParams<ApiFutureFlags<Config['future']>>,
-    'session' | 'plan' | 'returnObject'
-  > {
+export interface RequestBillingOptions<
+  Config extends AppConfigArg,
+> extends Omit<BillingRequestParams, 'session' | 'plan' | 'returnObject'> {
   /**
    * The plan to request. Must be one of the values defined in the `billing` config option.
    */
@@ -118,6 +118,10 @@ export interface UpdateUsageCappedAmountOptions {
   };
 }
 
+/**
+ * Provides utilities that apps can use to request billing for the app using the Admin API.
+ * @publicDocs
+ */
 export interface BillingContext<Config extends AppConfigArg> {
   /**
    * Checks if the shop has an active payment for any plan defined in the `billing` config option.

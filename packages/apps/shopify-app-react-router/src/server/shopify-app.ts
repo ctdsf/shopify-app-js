@@ -1,7 +1,6 @@
 import '@shopify/shopify-api/adapters/web-api';
 import {
   ConfigInterface as ApiConfig,
-  LATEST_API_VERSION,
   ShopifyError,
   shopifyApi,
 } from '@shopify/shopify-api';
@@ -40,6 +39,7 @@ import {FutureFlagOptions, logDisabledFutureFlags} from './future/flags';
  *
  * @param appConfig Configuration options for your Shopify app, such as the scopes your app needs.
  * @returns `ShopifyApp` An object constructed using your appConfig.  It has methods for interacting with Shopify.
+ * @publicDocs
  *
  * @example
  * <caption>The minimum viable configuration</caption>
@@ -163,11 +163,9 @@ export function deriveApi(appConfig: AppConfigArg): BasicParams['api'] {
     hostScheme: appUrl.protocol.replace(':', '') as 'http' | 'https',
     userAgentPrefix,
     isEmbeddedApp: true,
-    apiVersion: appConfig.apiVersion ?? LATEST_API_VERSION,
     isCustomStoreApp: appConfig.distribution === AppDistribution.ShopifyAdmin,
     billing: appConfig.billing,
     future: {
-      lineItemBilling: true,
       unstable_managedPricingSupport: true,
     },
     _logDisabledFutureFlags: false,

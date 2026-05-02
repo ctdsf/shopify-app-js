@@ -1,6 +1,5 @@
-import {Session, ShopifyRestResources} from '@shopify/shopify-api';
+import {Session, WebhookTypeValue} from '@shopify/shopify-api';
 
-import {AppConfigArg} from '../../config-types';
 import type {AdminApiContext} from '../../clients';
 
 export interface RegisterWebhooksOptions {
@@ -76,7 +75,8 @@ interface Context<Topics = string | number | symbol> {
   topic: Topics;
 
   /**
-   * A unique ID for the webhook. Useful to keep track of which events your app has already processed.
+   * A unique ID for the webhook. This is the idempotency key — useful to keep track of which
+   * events your app has already processed.
    *
    * @example
    * <caption>Webhook ID.</caption>
@@ -114,7 +114,12 @@ interface Context<Topics = string | number | symbol> {
   payload: Record<string, any>;
 
   /**
-   * The sub-topic of the webhook. This is only available for certain webhooks.
+   * The type of webhook: 'webhooks' for traditional webhooks or 'events' for events webhooks.
+   */
+  webhookType: WebhookTypeValue;
+
+  /**
+   * The sub-topic of the webhook. Only available for traditional webhooks.
    *
    * @example
    * <caption>Webhook sub-topic.</caption>
@@ -132,17 +137,46 @@ interface Context<Topics = string | number | symbol> {
    *
    */
   subTopic?: string;
+
+  /**
+   * The name assigned to the webhook subscription. Only available for traditional webhooks.
+   */
+  name?: string;
+
+  /**
+   * The handle for the webhook subscription. Only available for events webhooks.
+   */
+  handle?: string;
+
+  /**
+   * The action type: 'create', 'update', or 'delete'. Only available for events webhooks.
+   */
+  action?: string;
+
+  /**
+   * The GID of the resource that triggered the webhook. Only available for events webhooks.
+   */
+  resourceId?: string;
+
+  /**
+   * The timestamp when the webhook was triggered.
+   */
+  triggeredAt?: string;
+
+  /**
+   * The unique event identifier.
+   */
+  eventId?: string;
 }
 
-export interface WebhookContextWithoutSession<Topics = string | number | symbol>
-  extends Context<Topics> {
+export interface WebhookContextWithoutSession<
+  Topics = string | number | symbol,
+> extends Context<Topics> {
   session: undefined;
   admin: undefined;
 }
 
 export interface WebhookContextWithSession<
-  ConfigArg extends AppConfigArg,
-  Resources extends ShopifyRestResources,
   Topics = string | number | symbol,
 > extends Context<Topics> {
   /**
@@ -217,19 +251,17 @@ export interface WebhookContextWithSession<
    * }
    * ```
    */
-  admin: AdminApiContext<ConfigArg, Resources>;
+  admin: AdminApiContext;
 }
 
-export type WebhookContext<
-  ConfigArg extends AppConfigArg,
-  Resources extends ShopifyRestResources,
-  Topics = string | number | symbol,
-> =
+export type WebhookContext<Topics = string | number | symbol> =
   | WebhookContextWithoutSession<Topics>
-  | WebhookContextWithSession<ConfigArg, Resources, Topics>;
+  | WebhookContextWithSession<Topics>;
 
-export type AuthenticateWebhook<
-  ConfigArg extends AppConfigArg,
-  Resources extends ShopifyRestResources,
-  Topics = string | number | symbol,
-> = (request: Request) => Promise<WebhookContext<ConfigArg, Resources, Topics>>;
+/**
+ * Verifies requests coming from Shopify webhooks.
+ * @publicDocs
+ */
+export type AuthenticateWebhook<Topics = string | number | symbol> = (
+  request: Request,
+) => Promise<WebhookContext<Topics>>;

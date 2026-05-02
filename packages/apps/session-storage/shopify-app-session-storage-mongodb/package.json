@@ -1,6 +1,6 @@
 {
   "name": "@shopify/shopify-app-session-storage-mongodb",
-  "version": "4.0.20",
+  "version": "6.0.0",
   "description": "Shopify App Session Storage for MongoDB",
   "repository": {
     "type": "git",
@@ -13,11 +13,14 @@
   "homepage": "https://github.com/Shopify/shopify-app-js/tree/main/packages/apps/session-storage/shopify-app-session-storage-mongodb",
   "author": "Shopify Inc.",
   "license": "MIT",
+  "engines": {
+    "node": ">=20.19.0"
+  },
   "main": "./dist/cjs/mongodb.js",
   "module": "./dist/esm/mongodb.mjs",
   "types": "./dist/ts/mongodb.d.ts",
   "scripts": {
-    "lint": "eslint . --ext .js,.ts",
+    "lint": "eslint .",
     "build": "pnpm rollup && pnpm tsc -p ./tsconfig.build.json",
     "tsc": "tsc",
     "test": "jest",
@@ -44,17 +47,20 @@
     "session storage"
   ],
   "dependencies": {
-    "mongodb": "^6.17.0"
+    "mongodb": "^7.1.1"
   },
   "peerDependencies": {
-    "@shopify/shopify-api": "^11.0.0",
-    "@shopify/shopify-app-session-storage": "^3.0.0"
+    "@shopify/shopify-api": "^13.0.0",
+    "@shopify/shopify-app-session-storage": "^5.0.0"
   },
   "devDependencies": {
-    "@shopify/shopify-app-session-storage-test-utils": "^3.0.20"
+    "@shopify/shopify-app-session-storage-test-utils": "^5.0.0"
   },
   "files": [
     "dist/*",
+    "src",
+    "!src/**/__tests__",
+    "!src/**/*.test.ts",
     "!tsconfig.tsbuildinfo",
     "!node_modules"
   ]

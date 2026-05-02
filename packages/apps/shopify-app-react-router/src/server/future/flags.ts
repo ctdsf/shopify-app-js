@@ -4,13 +4,27 @@ import type {AppConfig} from '../config-types';
 
 // When adding new flags, you should also add them to the `TEST_FUTURE_FLAGS` object in `test-config.ts` to ensure that
 // it doesn't cause regressions.
-export interface FutureFlags {}
+/**
+ * Set future flags using the `future` configuration field to opt in to upcoming breaking changes.
+ *
+ * With this feature, you can prepare for major releases ahead of time, as well as try out new features before they are released.
+ * @publicDocs
+ */
+export interface FutureFlags {
+  /**
+   * When enabled, the app will start using expiring offline access tokens and automatically refresh them when they are close to expiring.
+   *
+   * @default false
+   */
+  expiringOfflineAccessTokens?: boolean;
+}
 
 // When adding new flags, use this format:
 // apiFutureFlag: Future extends FutureFlags ? Future['reactRouterFutureFlag'] : false;
-export interface ApiFutureFlags<_Future extends FutureFlagOptions> {
-  // We're currently hardcoding this flag to true in our settings, so we should propagate it here
-  lineItemBilling: true;
+export interface ApiFutureFlags<Future extends FutureFlagOptions> {
+  expiringOfflineAccessTokens: Future extends FutureFlags
+    ? Future['expiringOfflineAccessTokens']
+    : false;
   unstable_managedPricingSupport: true;
 }
 

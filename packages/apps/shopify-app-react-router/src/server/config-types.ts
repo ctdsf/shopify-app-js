@@ -30,16 +30,16 @@ export interface AppConfigArg<
   Storage extends SessionStorage = SessionStorage,
   Future extends FutureFlagOptions = FutureFlagOptions,
 > extends Omit<
-    ApiConfigArg<ApiFutureFlags<Future>>,
-    | 'hostName'
-    | 'hostScheme'
-    | 'apiVersion'
-    | 'isCustomStoreApp'
-    | 'isEmbeddedApp'
-    | 'future'
-    | 'billing'
-    | 'restResources'
-  > {
+  ApiConfigArg<ApiFutureFlags<Future>>,
+  | 'hostName'
+  | 'hostScheme'
+  | 'apiVersion'
+  | 'isCustomStoreApp'
+  | 'isEmbeddedApp'
+  | 'future'
+  | 'billing'
+  | 'restResources'
+> {
   /**
    * The URL your app is running on.
    *
@@ -224,20 +224,18 @@ export interface AppConfigArg<
    *
    * {@link https://shopify.dev/docs/api/}
    *
-   * @defaultValue `LATEST_API_VERSION` from `@shopify/shopify-app-react-router`
-   *
    * @example
-   * <caption>Using the latest API Version (Recommended)</caption>
+   * <caption>Specifying an API Version</caption>
    * ```ts
-   * import { LATEST_API_VERSION, shopifyApp } from "@shopify/shopify-app-react-router/server";
+   * import { ApiVersion, shopifyApp } from "@shopify/shopify-app-react-router/server";
    *
    * const shopify = shopifyApp({
    *   // ...etc
-   *   apiVersion: LATEST_API_VERSION,
+   *   apiVersion: ApiVersion.July25,
    * });
    * ```
    */
-  apiVersion?: ApiVersion;
+  apiVersion: ApiVersion;
 
   /**
    * A path that Shopify can reserve for auth related endpoints.
@@ -247,14 +245,14 @@ export interface AppConfigArg<
    * @default `"/auth"`
    *
    * @example
-   * <caption>Using the latest API Version (Recommended)</caption>
+   * <caption>Using a specific API Version</caption>
    * ```ts
    * // /app/shopify.server.ts
-   * import { LATEST_API_VERSION, shopifyApp } from "@shopify/shopify-app-react-router/server";
+   * import { shopifyApp } from "@shopify/shopify-app-react-router/server";
    *
    * const shopify = shopifyApp({
    *   // ...etc
-   *   apiVersion: LATEST_API_VERSION,
+   *   authPathPrefix: "/auth",
    * });
    * export default shopify;
    * export const authenticate = shopify.authenticate;
@@ -281,8 +279,9 @@ export interface AppConfigArg<
   future?: Future;
 }
 
-export interface AppConfig<Storage extends SessionStorage = SessionStorage>
-  extends Omit<ApiConfig, 'future' | 'billing'> {
+export interface AppConfig<
+  Storage extends SessionStorage = SessionStorage,
+> extends Omit<ApiConfig, 'future' | 'billing'> {
   canUseLoginForm: boolean;
   appUrl: string;
   auth: AuthConfig;

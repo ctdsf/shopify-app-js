@@ -6,7 +6,6 @@ import {
   InvalidOAuthError,
   Session,
   Shopify,
-  ShopifyRestResources,
 } from '@shopify/shopify-api';
 
 import type {BasicParams} from '../../../types';
@@ -31,12 +30,9 @@ import {AuthorizationStrategy, SessionContext, OnErrorOptions} from './types';
 
 export class AuthCodeFlowStrategy<
   Config extends AppConfigArg,
-  Resources extends ShopifyRestResources = ShopifyRestResources,
-> implements AuthorizationStrategy
-{
+> implements AuthorizationStrategy {
   protected api: Shopify<
     ApiConfigWithFutureFlags<Config['future']>,
-    ShopifyRestResources,
     ApiFutureFlags<Config['future']>
   >;
 
@@ -195,6 +191,7 @@ export class AuthCodeFlowStrategy<
     try {
       const {session, headers: responseHeaders} = await api.auth.callback({
         rawRequest: request,
+        expiring: config.future.expiringOfflineAccessTokens,
       });
 
       await config.sessionStorage!.storeSession(session);
@@ -211,12 +208,7 @@ export class AuthCodeFlowStrategy<
         isOnline: session.isOnline,
       });
 
-      await triggerAfterAuthHook<Config, Resources>(
-        {api, config, logger},
-        session,
-        request,
-        this,
-      );
+      await triggerAfterAuthHook({api, config, logger}, session, request, this);
 
       throw await redirectToShopifyOrAppRoot(
         request,

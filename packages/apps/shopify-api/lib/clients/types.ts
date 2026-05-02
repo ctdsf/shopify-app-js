@@ -3,10 +3,9 @@ import {
   ApiClientRequestOptions,
   SearchParams,
 } from '@shopify/admin-api-client';
-import {Method} from '@shopify/network';
 
 import {Session} from '../session/session';
-import type {ApiVersion} from '../types';
+import type {ApiVersion, Method} from '../types';
 import {Headers} from '../../runtime/http';
 
 import {GraphqlClient} from './admin/graphql/client';
@@ -28,14 +27,14 @@ export interface ClientArgs {
  */
 export type HeaderParams = Record<string, string | number | string[]>;
 
-/* eslint-disable @shopify/typescript/prefer-pascal-case-enums */
+/* eslint-disable @shopify/typescript-prefer-pascal-case-enums */
 export enum DataType {
   JSON = 'application/json',
   GraphQL = 'application/graphql',
   URLEncoded = 'application/x-www-form-urlencoded',
 }
 
-/* eslint-enable @shopify/typescript/prefer-pascal-case-enums */
+/* eslint-enable @shopify/typescript-prefer-pascal-case-enums */
 
 export interface GetRequestParams {
   /**

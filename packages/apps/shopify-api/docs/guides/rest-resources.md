@@ -47,7 +47,7 @@ Below is an example of how REST resources can make it easier to fetch the first 
 // App must provide response types
 interface ProductResponse {
   product: {
-    id: number;
+    id: string;
     title: string;
     // ...
   };
@@ -131,7 +131,7 @@ await product.save({
 
 const product = await shopify.rest.Product.find({
   session: session,
-  id: 632910392,
+  id: "632910392",
 });
 
 console.log(product);
@@ -163,11 +163,11 @@ To use REST resources, you can import the desired version and mount it onto your
 
 ```ts
 import {shopifyApi} from '@shopify/shopify-api';
-import {restResources} from '@shopify/shopify-api/rest/admin/2022-10';
+import {restResources} from '@shopify/shopify-api/rest/admin/2026-01';
 
 const shopify = shopifyApi({
   ...,
-  apiVersion: ApiVersion.October22,
+  apiVersion: ApiVersion.January26,
   restResources,
 });
 ```

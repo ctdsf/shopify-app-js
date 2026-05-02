@@ -41,6 +41,7 @@ describe('shopifyApiTypes', () => {
           [`./testDir/${type}.types.d.ts`]: {
             schema: expectedSchema,
             plugins: ['typescript'],
+            config: {defaultScalarType: 'string', scalars: {JSON: 'unknown'}},
           },
           [`./testDir/${type}.generated.d.ts`]: {
             schema: expectedSchema,
@@ -73,6 +74,7 @@ describe('shopifyApiTypes', () => {
           [`./testDir/${type}.types.d.ts`]: {
             schema: `./testDir/${type}-2024-10.schema.json`,
             plugins: ['typescript'],
+            config: {defaultScalarType: 'string', scalars: {JSON: 'unknown'}},
           },
           [`./testDir/${type}.generated.d.ts`]: {
             schema: `./testDir/${type}-2024-10.schema.json`,
@@ -102,6 +104,7 @@ describe('shopifyApiTypes', () => {
           [`./${type}.types.d.ts`]: {
             schema: expectedSchema,
             plugins: ['typescript'],
+            config: {defaultScalarType: 'string', scalars: {JSON: 'unknown'}},
           },
           [`./${type}.generated.d.ts`]: {
             schema: expectedSchema,
@@ -131,6 +134,7 @@ describe('shopifyApiTypes', () => {
           [`./${type}.types.ts`]: {
             schema: `./${type}.schema.json`,
             plugins: ['typescript'],
+            config: {defaultScalarType: 'string', scalars: {JSON: 'unknown'}},
           },
           [`./${type}.generated.ts`]: {
             schema: `./${type}.schema.json`,
@@ -139,6 +143,86 @@ describe('shopifyApiTypes', () => {
             presetConfig: {apiType, module: undefined},
           },
         });
+      });
+
+      it('includes enumsAsConst config when option is true', () => {
+        // GIVEN
+        const config: ShopifyApiProjectOptions = {
+          apiType,
+          enumsAsConst: true,
+          apiKey: 'test',
+        };
+
+        const spy = jest.spyOn(fs, 'existsSync');
+        spy.mockReturnValueOnce(true);
+
+        // WHEN
+        const projectConfig = shopifyApiTypes(config);
+
+        // THEN
+        expect(projectConfig[`./${type}.types.d.ts`]).toEqual(
+          expect.objectContaining({
+            schema: `./${type}.schema.json`,
+            plugins: ['typescript'],
+            config: {
+              defaultScalarType: 'string',
+              scalars: {JSON: 'unknown'},
+              enumsAsConst: true,
+            },
+          }),
+        );
+      });
+
+      it('includes enumsAsConst config when option is false', () => {
+        // GIVEN
+        const config: ShopifyApiProjectOptions = {
+          apiType,
+          enumsAsConst: false,
+          apiKey: 'test',
+        };
+
+        const spy = jest.spyOn(fs, 'existsSync');
+        spy.mockReturnValueOnce(true);
+
+        // WHEN
+        const projectConfig = shopifyApiTypes(config);
+
+        // THEN
+        expect(projectConfig[`./${type}.types.d.ts`]).toEqual(
+          expect.objectContaining({
+            schema: `./${type}.schema.json`,
+            plugins: ['typescript'],
+            config: {
+              defaultScalarType: 'string',
+              scalars: {JSON: 'unknown'},
+              enumsAsConst: false,
+            },
+          }),
+        );
+      });
+
+      it('uses default scalar config when enumsAsConst is not provided', () => {
+        // GIVEN
+        const config: ShopifyApiProjectOptions = {
+          apiType,
+          apiKey: 'test',
+        };
+
+        const spy = jest.spyOn(fs, 'existsSync');
+        spy.mockReturnValueOnce(true);
+
+        // WHEN
+        const projectConfig = shopifyApiTypes(config);
+
+        // THEN
+        expect(projectConfig[`./${type}.types.d.ts`]).toEqual({
+          schema: `./${type}.schema.json`,
+          plugins: ['typescript'],
+          config: {defaultScalarType: 'string', scalars: {JSON: 'unknown'}},
+        });
+        expect(projectConfig[`./${type}.types.d.ts`]).not.toHaveProperty(
+          'config.enumsAsConst',
+        );
       });
     },
   );

@@ -12,12 +12,12 @@ jobs:
     steps:
       - name: Dependabot metadata
         id: metadata
-        uses: dependabot/fetch-metadata@8348ea7f5d949b08c7f125a44b569c9626b05db3 # v1.7.0
+        uses: dependabot/fetch-metadata@21025c705c08248db411dc16f3619e6b5f9ea21a # v2.5.0
         with:
           github-token: '${{ secrets.SHOPIFY_GH_ACCESS_TOKEN }}'
 
       - name: Checkout (not dev dep)
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         if: ${{ steps.metadata.outputs.update-type != 'version-update:semver-major' && steps.metadata.outputs.dependency-type != 'direct:development' }}
         with:
           fetch-depth: 2

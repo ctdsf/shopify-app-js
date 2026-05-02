@@ -1,7 +1,10 @@
 {
   "name": "@shopify/shopify-app-express",
-  "version": "5.0.20",
+  "version": "7.0.0",
   "description": "Shopify Express Middleware - to simplify the building of Shopify Apps with Express",
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Shopify/shopify-app-js.git",
@@ -17,7 +20,7 @@
   "module": "./dist/esm/index.mjs",
   "types": "./dist/ts/index.d.ts",
   "scripts": {
-    "lint": "eslint . --ext .js,.ts",
+    "lint": "eslint .",
     "build": "pnpm rollup && pnpm tsc -p ./tsconfig.build.json",
     "tsc": "tsc",
     "test": "jest",
@@ -43,23 +46,26 @@
     "Storefront API"
   ],
   "dependencies": {
-    "@shopify/shopify-api": "^11.14.1",
-    "@shopify/shopify-app-session-storage": "^3.0.20",
-    "@shopify/shopify-app-session-storage-memory": "^4.0.20",
-    "cookie-parser": "^1.4.7",
-    "express": "^4.21.2",
-    "semver": "^7.7.1"
+    "@shopify/shopify-api": "^13.0.0",
+    "@shopify/shopify-app-session-storage": "^5.0.0",
+    "@shopify/shopify-app-session-storage-memory": "^6.0.0",
+    "compare-versions": "^6.1.1"
+  },
+  "peerDependencies": {
+    "express": "^5.0.0"
   },
   "devDependencies": {
     "@types/compression": "^1.8.1",
-    "@types/cookie-parser": "^1.4.9",
-    "@types/express": "^4.17.21",
-    "@types/jsonwebtoken": "^9.0.10",
-    "@types/semver": "^7.7.0",
-    "jsonwebtoken": "^9.0.2"
+    "@types/express": "^5.0.6",
+    "express": "^5.2.1",
+    "supertest": "^7.2.2",
+    "jose": "^5.9.6"
   },
   "files": [
     "dist/*",
+    "src",
+    "!src/**/__tests__",
+    "!src/**/*.test.ts",
     "!tsconfig.tsbuildinfo",
     "!node_modules"
   ]

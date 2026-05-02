@@ -1,11 +1,10 @@
 import request from 'supertest';
-import {StatusCode} from '@shopify/network';
 
 import {queueMockResponse} from '../../__tests__/test-helper';
 import {testConfig} from '../../__tests__/test-config';
 import {HttpWebhookHandlerWithCallback} from '../types';
 import {InvalidDeliveryMethodError, InvalidWebhookError} from '../../error';
-import {LogSeverity} from '../../types';
+import {LogSeverity, StatusCode} from '../../types';
 import {Shopify, shopifyApi} from '../..';
 import {Session} from '../../session/session';
 
@@ -148,7 +147,7 @@ describe('webhooks', () => {
 
     expect(() => {
       return shopify.webhooks.addHandlers({PRODUCTS_CREATE: handler2});
-    }).toThrowError(InvalidDeliveryMethodError);
+    }).toThrow(InvalidDeliveryMethodError);
   });
 
   it('fails to register multiple PubSub handlers for the same topic', async () => {
@@ -161,7 +160,7 @@ describe('webhooks', () => {
 
     expect(() => {
       return shopify.webhooks.addHandlers({PRODUCTS_CREATE: handler2});
-    }).toThrowError(InvalidDeliveryMethodError);
+    }).toThrow(InvalidDeliveryMethodError);
   });
 });
 

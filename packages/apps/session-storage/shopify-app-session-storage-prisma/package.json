@@ -1,6 +1,6 @@
 {
   "name": "@shopify/shopify-app-session-storage-prisma",
-  "version": "6.0.9",
+  "version": "9.0.0",
   "description": "Shopify App Session Storage for Prisma",
   "repository": {
     "type": "git",
@@ -17,7 +17,7 @@
   "module": "./dist/esm/prisma.mjs",
   "types": "./dist/ts/prisma.d.ts",
   "scripts": {
-    "lint": "eslint . --ext .js,.ts",
+    "lint": "eslint .",
     "build": "pnpm prisma generate && pnpm rollup && pnpm tsc -p ./tsconfig.build.json",
     "tsc": "tsc",
     "test": "jest",
@@ -45,19 +45,22 @@
     "Prisma"
   ],
   "peerDependencies": {
-    "@prisma/client": "^6.6.0",
-    "@shopify/shopify-api": "^11.0.0",
-    "@shopify/shopify-app-session-storage": "^3.0.0",
-    "prisma": "^6.6.0"
+    "@prisma/client": "^6.19.0",
+    "@shopify/shopify-api": "^13.0.0",
+    "@shopify/shopify-app-session-storage": "^5.0.0",
+    "prisma": "^6.19.0"
   },
   "devDependencies": {
-    "@prisma/client": "^6.6.0",
-    "@shopify/shopify-app-session-storage-test-utils": "^3.0.20",
-    "prisma": "^6.6.0"
+    "@prisma/client": "^6.19.0",
+    "@shopify/shopify-app-session-storage-test-utils": "^5.0.0",
+    "prisma": "^6.19.0"
   },
   "dependencies": {},
   "files": [
     "dist/*",
+    "src",
+    "!src/**/__tests__",
+    "!src/**/*.test.ts",
     "!tsconfig.tsbuildinfo",
     "!node_modules"
   ]

@@ -1,6 +1,40 @@
 import {ValidationErrorReason, ValidationInvalid} from '../utils/types';
 import {AdapterArgs} from '../../runtime/types';
 import {Session} from '../session/session';
+import {ShopifyEventsHeader, ShopifyHeader} from '../types';
+
+export const WebhookType = {
+  Webhooks: 'webhooks',
+  Events: 'events',
+} as const;
+
+export type WebhookTypeValue = (typeof WebhookType)[keyof typeof WebhookType];
+
+export const WEBHOOK_HEADER_NAMES = {
+  [WebhookType.Webhooks]: {
+    hmac: ShopifyHeader.Hmac,
+    topic: ShopifyHeader.Topic,
+    domain: ShopifyHeader.Domain,
+    apiVersion: ShopifyHeader.ApiVersion,
+    webhookId: ShopifyHeader.WebhookId,
+    subTopic: ShopifyHeader.SubTopic,
+    name: ShopifyHeader.Name,
+    triggeredAt: ShopifyHeader.TriggeredAt,
+    eventId: ShopifyHeader.EventId,
+  },
+  [WebhookType.Events]: {
+    hmac: ShopifyEventsHeader.Hmac,
+    topic: ShopifyEventsHeader.Topic,
+    domain: ShopifyEventsHeader.Domain,
+    apiVersion: ShopifyEventsHeader.ApiVersion,
+    webhookId: ShopifyEventsHeader.WebhookId,
+    eventId: ShopifyEventsHeader.EventId,
+    handle: ShopifyEventsHeader.Handle,
+    action: ShopifyEventsHeader.Action,
+    resourceId: ShopifyEventsHeader.ResourceId,
+    triggeredAt: ShopifyEventsHeader.TriggeredAt,
+  },
+} as const;
 
 export enum DeliveryMethod {
   Http = 'http',
@@ -140,30 +174,47 @@ export const WebhookValidationErrorReason = {
 export type WebhookValidationErrorReasonType =
   (typeof WebhookValidationErrorReason)[keyof typeof WebhookValidationErrorReason];
 
-export interface WebhookFields {
-  webhookId: string;
+interface BaseWebhookFields {
   apiVersion: string;
   domain: string;
   hmac: string;
   topic: string;
-  subTopic?: string;
+  triggeredAt?: string;
 }
 
-export interface WebhookValidationInvalid
-  extends Omit<ValidationInvalid, 'reason'> {
+export interface WebhooksWebhookFields extends BaseWebhookFields {
+  webhookType: typeof WebhookType.Webhooks;
+  webhookId: string;
+  subTopic?: string;
+  name?: string;
+  eventId?: string;
+}
+
+export interface EventsWebhookFields extends BaseWebhookFields {
+  webhookType: typeof WebhookType.Events;
+  webhookId: string;
+  eventId: string;
+  handle?: string;
+  action?: string;
+  resourceId?: string;
+}
+
+export type WebhookFields = WebhooksWebhookFields | EventsWebhookFields;
+
+export interface WebhookValidationInvalid extends Omit<
+  ValidationInvalid,
+  'reason'
+> {
   valid: false;
   reason: WebhookValidationErrorReasonType;
 }
 
-export interface WebhookValidationMissingHeaders
-  extends WebhookValidationInvalid {
+export interface WebhookValidationMissingHeaders extends WebhookValidationInvalid {
   reason: typeof WebhookValidationErrorReason.MissingHeaders;
   missingHeaders: string[];
 }
 
-export interface WebhookValidationValid extends WebhookFields {
-  valid: true;
-}
+export type WebhookValidationValid = WebhookFields & {valid: true};
 
 export type WebhookValidation =
   | WebhookValidationValid

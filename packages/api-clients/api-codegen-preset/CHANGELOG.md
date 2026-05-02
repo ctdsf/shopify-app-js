@@ -1,5 +1,41 @@
 # Changelog
 
+## 2.0.0
+
+### Major Changes
+
+- 050114d: Updated `@graphql-codegen/introspection` from v4 to v5. Dropped Node 18 support.
+- 0b27130: Updated `@graphql-codegen/cli` from v5 to v6
+
+### Patch Changes
+
+- af723c8: Updated `graphql` dependencies
+- 4c1789b: Updated `@graphql-codegen/typescript`, ` @parcel/watcher`, ` isbot` dependencies
+- 822e244: Fixed TypeScript compilation error (ts5097) for users without `allowImportingTsExtensions` by using `.js` extensions for generated import paths. The `.js` extension works across all TypeScript module resolution strategies.
+- d5ae946: Publish TypeScript source files to npm so "Go to Definition" in IDEs navigates to real source code instead of compiled `.d.ts` declaration files. Source maps already pointed to the correct paths — the source files just weren't included in the published packages.
+
+## 1.2.2
+
+### Patch Changes
+
+- b69d09f: bump @graphql-codegen/typescript from 4.1.6 to 5.0.1
+
+## 1.2.1
+
+### Patch Changes
+
+- 62394e5: Fixed TypeScript module resolution error by including file extensions (.d.ts or .ts) in generated import paths to support Node16/NodeNext module resolution strategies.
+
+## 1.2.0
+
+### Minor Changes
+
+- 02ffd79: Added support for `enumsAsConst` option to represent GraphQL enums as type-safe strings as opposed to using TypeScript’s enum construct which requires importing.
+
+### Patch Changes
+
+- dc41d09: Unpin graphql-config dependency version
+
 ## 1.1.9
 
 ### Patch Changes

@@ -1,9 +1,9 @@
-import {WebhookValidationErrorReason} from '@shopify/shopify-api';
+import {WebhookValidationErrorReason, WebhookType} from '@shopify/shopify-api';
 
 import type {BasicParams} from '../../types';
 import {adminClientFactory} from '../../clients';
 import {handleClientErrorFactory} from '../admin/helpers';
-import {createOrLoadOfflineSession} from '../helpers';
+import {ensureValidOfflineSession} from '../../helpers';
 
 import type {
   AuthenticateWebhook,
@@ -49,17 +49,42 @@ export function authenticateWebhookFactory<Topics extends string>(
         throw new Response(undefined, {status: 400, statusText: 'Bad Request'});
       }
     }
-    const session = await createOrLoadOfflineSession(check.domain, params);
-    const webhookContext: WebhookContextWithoutSession<Topics> = {
-      apiVersion: check.apiVersion,
-      shop: check.domain,
-      topic: check.topic as Topics,
-      webhookId: check.webhookId,
-      payload: JSON.parse(rawBody),
-      subTopic: check.subTopic || undefined,
-      session: undefined,
-      admin: undefined,
-    };
+    const session = await ensureValidOfflineSession(params, check.domain);
+
+    let webhookContext: WebhookContextWithoutSession<Topics>;
+
+    if (check.webhookType === WebhookType.Webhooks) {
+      webhookContext = {
+        apiVersion: check.apiVersion,
+        shop: check.domain,
+        topic: check.topic as Topics,
+        webhookId: check.webhookId,
+        payload: JSON.parse(rawBody),
+        subTopic: check.subTopic || undefined,
+        session: undefined,
+        admin: undefined,
+        webhookType: check.webhookType,
+        name: check.name,
+        triggeredAt: check.triggeredAt,
+        eventId: check.eventId,
+      };
+    } else {
+      webhookContext = {
+        apiVersion: check.apiVersion,
+        shop: check.domain,
+        topic: check.topic as Topics,
+        webhookId: check.webhookId,
+        payload: JSON.parse(rawBody),
+        session: undefined,
+        admin: undefined,
+        webhookType: check.webhookType,
+        handle: check.handle,
+        action: check.action,
+        resourceId: check.resourceId,
+        triggeredAt: check.triggeredAt,
+        eventId: check.eventId,
+      };
+    }
 
     if (!session) {
       return webhookContext;

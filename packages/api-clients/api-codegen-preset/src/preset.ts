@@ -9,7 +9,9 @@ export const preset: Types.OutputPreset<ShopifyApiPresetConfig> = {
     const apiType = options.presetConfig.apiType;
 
     const {interfaceExtension, module, presetConfigs} = apiConfigs[apiType];
-    const typesFile = apiConfigs[apiType].typesFile;
+
+    // Use .js extension for import paths - TypeScript resolves these to .ts/.d.ts files
+    const typesFile = `${apiConfigs[apiType].typesFile}.js`;
 
     return hydrogenPreset.buildGeneratesSection({
       ...options,

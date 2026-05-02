@@ -1,6 +1,6 @@
 {
   "name": "@shopify/shopify-app-session-storage-sqlite",
-  "version": "4.0.20",
+  "version": "6.0.0",
   "description": "Shopify App Session Storage for SQLite",
   "repository": {
     "type": "git",
@@ -17,7 +17,7 @@
   "module": "./dist/esm/sqlite.mjs",
   "types": "./dist/ts/sqlite.d.ts",
   "scripts": {
-    "lint": "eslint . --ext .js,.ts",
+    "lint": "eslint .",
     "build": "pnpm rollup && pnpm tsc -p ./tsconfig.build.json",
     "tsc": "tsc",
     "test": "jest",
@@ -48,15 +48,18 @@
     "sqlite3": "^5.1.7"
   },
   "peerDependencies": {
-    "@shopify/shopify-api": "^11.0.0",
-    "@shopify/shopify-app-session-storage": "^3.0.0"
+    "@shopify/shopify-api": "^13.0.0",
+    "@shopify/shopify-app-session-storage": "^5.0.0"
   },
   "devDependencies": {
-    "@shopify/shopify-app-session-storage-test-utils": "^3.0.20",
+    "@shopify/shopify-app-session-storage-test-utils": "^5.0.0",
     "@types/sqlite3": "^3.1.8"
   },
   "files": [
     "dist/*",
+    "src",
+    "!src/**/__tests__",
+    "!src/**/*.test.ts",
     "!tsconfig.tsbuildinfo",
     "!node_modules"
   ]

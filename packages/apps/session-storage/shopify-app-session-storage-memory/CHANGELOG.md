@@ -1,5 +1,53 @@
 # @shopify/shopify-app-session-storage-memory
 
+## 6.0.0
+
+### Patch Changes
+
+- d5ae946: Publish TypeScript source files to npm so "Go to Definition" in IDEs navigates to real source code instead of compiled `.d.ts` declaration files. Source maps already pointed to the correct paths — the source files just weren't included in the published packages.
+- Updated dependencies [0d4a3f7]
+- Updated dependencies [4c1789b]
+- Updated dependencies [78c8968]
+- Updated dependencies [d5ae946]
+- Updated dependencies [0bb7837]
+- Updated dependencies [1eb863d]
+  - @shopify/shopify-api@13.0.0
+  - @shopify/shopify-app-session-storage@5.0.0
+
+## 5.0.5
+
+## 5.0.4
+
+## 5.0.3
+
+## 5.0.2
+
+## 5.0.1
+
+## 5.0.0
+
+### Major Changes
+
+- [dc41d09]: `@shopify/shopify-api` now requires Node >= v20.10.0.
+
+  As `@shopify/shopify-api` is a peer dependency, this is a breaking change, though we expect real world impact to be minimal for most users.
+
+  If you are using Node, make sure you are using Node version 20.10.0 or above
+
+### Patch Changes
+
+- Updated dependencies [dc41d09]
+- Updated dependencies [c3005a6]
+- Updated dependencies [dc41d09]
+- Updated dependencies [a5be0d0]
+- Updated dependencies [6606d39]
+- Updated dependencies [48d3631]
+- Updated dependencies [7d8aa81]
+- Updated dependencies [089f4fd]
+- Updated dependencies [dc41d09]
+  - @shopify/shopify-api@12.0.0
+  - @shopify/shopify-app-session-storage@4.0.0
+
 ## 4.0.20
 
 ## 4.0.19

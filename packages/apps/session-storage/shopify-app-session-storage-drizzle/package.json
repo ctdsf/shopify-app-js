@@ -1,6 +1,6 @@
 {
   "name": "@shopify/shopify-app-session-storage-drizzle",
-  "version": "2.1.2",
+  "version": "4.0.0",
   "description": "Shopify App Session Storage for Drizzle",
   "repository": {
     "type": "git",
@@ -17,7 +17,7 @@
   "module": "./dist/esm/drizzle.mjs",
   "types": "./dist/ts/drizzle.d.ts",
   "scripts": {
-    "lint": "eslint . --ext .js,.ts",
+    "lint": "eslint .",
     "build": "pnpm rollup && pnpm tsc -p ./tsconfig.build.json",
     "tsc": "tsc",
     "test": "jest",
@@ -47,23 +47,26 @@
     "tslib": "^2.8.1"
   },
   "peerDependencies": {
-    "@shopify/shopify-api": "^11.0.0",
-    "@shopify/shopify-app-session-storage": "^3.0.0",
-    "drizzle-orm": "^0.40.0"
+    "@shopify/shopify-api": "^13.0.0",
+    "@shopify/shopify-app-session-storage": "^5.0.0",
+    "drizzle-orm": "^0.44.7 || ^0.45.0"
   },
   "devDependencies": {
-    "@libsql/client": "^0.15.9",
-    "@shopify/shopify-app-session-storage-test-utils": "^3.0.20",
+    "@libsql/client": "^0.17.2",
+    "@shopify/shopify-app-session-storage-test-utils": "^5.0.0",
     "@types/better-sqlite3": "^7.6.13",
-    "@types/pg": "^8.11.13",
-    "better-sqlite3": "^11.9.1",
-    "drizzle-kit": "^0.31.4",
-    "drizzle-orm": "^0.44.2",
-    "mysql2": "^3.14.2",
-    "pg": "^8.14.1"
+    "@types/pg": "^8.20.0",
+    "better-sqlite3": "^12.9.0",
+    "drizzle-kit": "^0.31.10",
+    "drizzle-orm": "^0.45.2",
+    "mysql2": "^3.20.0",
+    "pg": "^8.20.0"
   },
   "files": [
     "dist/*",
+    "src",
+    "!src/**/__tests__",
+    "!src/**/*.test.ts",
     "!tsconfig.tsbuildinfo",
     "!node_modules"
   ]

@@ -1,3 +1,4 @@
+import {createRef} from 'react';
 import {mount} from '@shopify/react-testing';
 
 import '../../../__tests__/test-helper';
@@ -45,4 +46,21 @@ describe('<AppProxyLink />', () => {
     });
     expect(component).toContainReactHtml('Hello world');
   });
-}); 
+
+  it('forwards ref to the underlying anchor element', () => {
+    // GIVEN
+    const ref = createRef<HTMLAnchorElement>();
+
+    // WHEN
+    mount(
+      <AppProxyProvider appUrl="http://my-app.example.io">
+        <AppProxyLink ref={ref} href="/my-action">
+          Hello world
+        </AppProxyLink>
+      </AppProxyProvider>,
+    );
+
+    // THEN
+    expect(ref.current).toBeInstanceOf(HTMLAnchorElement);
+  });
+});

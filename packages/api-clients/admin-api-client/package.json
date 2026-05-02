@@ -1,6 +1,6 @@
 {
   "name": "@shopify/admin-api-client",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Shopify Admin API Client - A lightweight JS client to interact with Shopify's Admin API",
   "repository": {
     "type": "git",
@@ -30,7 +30,7 @@
     }
   },
   "scripts": {
-    "lint": "eslint . --ext .js,.ts",
+    "lint": "eslint .",
     "build": "pnpm tsc -p ./tsconfig.build.json && pnpm rollup",
     "tsc": "tsc",
     "test": "jest",
@@ -42,9 +42,6 @@
     "release": "pnpm build && changeset publish"
   },
   "jest": {
-    "setupFilesAfterEnv": [
-      "./src/tests/setupTests.ts"
-    ],
     "transform": {
       ".*": "babel-jest"
     }
@@ -59,14 +56,19 @@
     "admin API"
   ],
   "files": [
-    "dist/**/*.*"
+    "dist/**/*.*",
+    "src",
+    "!src/**/__tests__",
+    "!src/**/*.test.ts"
   ],
   "dependencies": {
-    "@shopify/graphql-client": "^1.4.1"
+    "@shopify/graphql-client": "^1.4.2"
   },
   "devDependencies": {
-    "jest-environment-jsdom": "^30.0.4",
-    "regenerator-runtime": "^0.14.1"
+    "@babel/preset-env": "^7.29.2",
+    "@shopify/babel-preset": "^25.0.2",
+    "jest-environment-jsdom": "^30.2.0",
+    "rollup-plugin-dts": "^6.4.1"
   },
   "bugs": {
     "url": "https://github.com/Shopify/shopify-app-js/issues"

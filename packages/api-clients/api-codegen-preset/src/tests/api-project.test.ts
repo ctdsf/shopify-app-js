@@ -120,6 +120,85 @@ describe('shopifyApiProject', () => {
           },
         });
       });
+
+      it('passes enumsAsConst option to shopifyApiTypes when true', () => {
+        // GIVEN
+        const config: ShopifyApiProjectOptions = {
+          apiType,
+          enumsAsConst: true,
+          apiKey: 'test',
+        };
+
+        // WHEN
+        const projectConfig = shopifyApiProject(config);
+
+        // THEN
+        expect(
+          projectConfig.extensions.codegen.generates[`./${type}.types.d.ts`],
+        ).toEqual(
+          expect.objectContaining({
+            schema: expect.anything(),
+            plugins: ['typescript'],
+            config: {
+              defaultScalarType: 'string',
+              scalars: {JSON: 'unknown'},
+              enumsAsConst: true,
+            },
+          }),
+        );
+      });
+
+      it('passes enumsAsConst option to shopifyApiTypes when false', () => {
+        // GIVEN
+        const config: ShopifyApiProjectOptions = {
+          apiType,
+          enumsAsConst: false,
+          apiKey: 'test',
+        };
+
+        // WHEN
+        const projectConfig = shopifyApiProject(config);
+
+        // THEN
+        expect(
+          projectConfig.extensions.codegen.generates[`./${type}.types.d.ts`],
+        ).toEqual(
+          expect.objectContaining({
+            schema: expect.anything(),
+            plugins: ['typescript'],
+            config: {
+              defaultScalarType: 'string',
+              scalars: {JSON: 'unknown'},
+              enumsAsConst: false,
+            },
+          }),
+        );
+      });
+
+      it('uses default scalar config when enumsAsConst is not provided', () => {
+        // GIVEN
+        const config: ShopifyApiProjectOptions = {
+          apiType,
+          apiKey: 'test',
+        };
+
+        // WHEN
+        const projectConfig = shopifyApiProject(config);
+
+        // THEN
+        expect(
+          projectConfig.extensions.codegen.generates[`./${type}.types.d.ts`],
+        ).toEqual(
+          expect.objectContaining({
+            schema: expect.anything(),
+            plugins: ['typescript'],
+            config: {defaultScalarType: 'string', scalars: {JSON: 'unknown'}},
+          }),
+        );
+        expect(
+          projectConfig.extensions.codegen.generates[`./${type}.types.d.ts`],
+        ).not.toHaveProperty('config.enumsAsConst');
+      });
     },
   );
 });

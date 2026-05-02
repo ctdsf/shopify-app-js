@@ -1,10 +1,13 @@
 {
   "name": "@shopify/shopify-api",
-  "version": "11.14.1",
+  "version": "13.0.0",
   "description": "Shopify API Library for Node - accelerate development with support for authentication, graphql proxy, webhooks",
   "types": "./dist/ts/lib/index.d.ts",
   "module": "./dist/esm/lib/index.mjs",
   "main": "./dist/cjs/lib/index.js",
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "exports": {
     ".": {
       "types": "./dist/ts/lib/index.d.ts",
@@ -45,14 +48,18 @@
     "pretest:adapters": "pnpm rollup -c adapters/__e2etests__/rollup.test-apps.config.js",
     "test:adapters": "jest --selectProjects adapters:mock adapters:node adapters:cf-worker adapters:web-api",
     "test:rest_resources": "jest --selectProjects rest_resources",
-    "lint": "jest --selectProjects lint",
-    "test:dev": "jest --selectProjects library lint",
+    "lint": "eslint .",
+    "test:dev": "jest --selectProjects library",
     "build": "pnpm rollup -c rollup.config.js && pnpm tsc -p ./tsconfig.build.json",
     "tsc": "tsc",
     "rollup": "rollup --bundleConfigAsCjs",
     "clean": "rimraf .rollup.cache dist bundle",
     "release": "pnpm build && changeset publish"
   },
+  "sideEffects": [
+    "./dist/esm/adapters/*/index.mjs",
+    "./dist/cjs/adapters/*/index.js"
+  ],
   "publishConfig": {
     "access": "public"
   },
@@ -79,37 +86,38 @@
     "Storefront API"
   ],
   "dependencies": {
-    "@shopify/admin-api-client": "^1.1.1",
-    "@shopify/graphql-client": "^1.4.1",
-    "@shopify/network": "^3.3.0",
-    "@shopify/storefront-api-client": "^1.0.9",
+    "@shopify/admin-api-client": "^1.1.2",
+    "@shopify/graphql-client": "^1.4.2",
+    "@shopify/storefront-api-client": "^1.0.10",
     "compare-versions": "^6.1.1",
-    "isbot": "^5.1.26",
+    "isbot": "^5.1.36",
     "jose": "^5.9.6",
-    "jsonwebtoken": "^9.0.2",
-    "node-fetch": "^2.6.1",
-    "tslib": "^2.8.1",
-    "uuid": "^11.1.0"
+    "lossless-json": "^4.3.0",
+    "tslib": "^2.8.1"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20250711.0",
-    "@swc/core": "^1.12.11",
-    "@types/express": "^4.17.13",
-    "@types/jsonwebtoken": "^9.0.10",
-    "@types/node-fetch": "^2.6.11",
-    "@types/uuid": "^10.0.0",
-    "expect": "^30.0.4",
-    "express": "^4.21.2",
+    "@cloudflare/workers-types": "^4.20260415.1",
+    "@types/express": "^5.0.6",
+    "express": "^5.2.1",
     "jest-environment-miniflare": "^2.14.4",
-    "miniflare": "^4.20250709.0",
-    "rollup": "^4.44.2",
-    "rollup-plugin-swc": "^0.2.1",
-    "wrangler": "^3.112.0"
+    "miniflare": "^4.20260415.0",
+    "rollup": "^4.59.0",
+    "supertest": "^7.2.2",
+    "wrangler": "^4.82.2"
   },
   "files": [
     "dist/*",
+    "lib",
+    "runtime",
+    "adapters",
+    "rest",
+    "test-helpers",
+    "future",
     "!bundle/*",
     "!node_modules",
-    "!adapters/__e2etests__/*"
+    "!adapters/__e2etests__/*",
+    "!**/__tests__",
+    "!**/__test-helpers",
+    "!**/*.test.ts"
   ]
 }

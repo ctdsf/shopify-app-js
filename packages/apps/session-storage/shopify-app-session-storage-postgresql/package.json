@@ -1,6 +1,6 @@
 {
   "name": "@shopify/shopify-app-session-storage-postgresql",
-  "version": "4.0.20",
+  "version": "6.0.0",
   "description": "Shopify App Session Storage for PostgreSQL",
   "repository": {
     "type": "git",
@@ -17,7 +17,7 @@
   "module": "./dist/esm/postgresql.mjs",
   "types": "./dist/ts/postgresql.d.ts",
   "scripts": {
-    "lint": "eslint . --ext .js,.ts",
+    "lint": "eslint .",
     "build": "pnpm rollup && pnpm tsc -p ./tsconfig.build.json",
     "tsc": "tsc",
     "test": "jest",
@@ -45,19 +45,22 @@
     "session storage"
   ],
   "dependencies": {
-    "pg": "^8.14.1",
-    "pg-connection-string": "^2.9.1"
+    "pg": "^8.20.0",
+    "pg-connection-string": "^2.12.0"
   },
   "peerDependencies": {
-    "@shopify/shopify-api": "^11.0.0",
-    "@shopify/shopify-app-session-storage": "^3.0.0"
+    "@shopify/shopify-api": "^13.0.0",
+    "@shopify/shopify-app-session-storage": "^5.0.0"
   },
   "devDependencies": {
-    "@shopify/shopify-app-session-storage-test-utils": "^3.0.20",
-    "@types/pg": "^8.11.13"
+    "@shopify/shopify-app-session-storage-test-utils": "^5.0.0",
+    "@types/pg": "^8.20.0"
   },
   "files": [
     "dist/*",
+    "src",
+    "!src/**/__tests__",
+    "!src/**/*.test.ts",
     "!tsconfig.tsbuildinfo",
     "!node_modules"
   ]

@@ -9,8 +9,7 @@ import {SqliteConnection} from './sqlite-connection';
 import {migrationList} from './migrations';
 import {SqliteSessionStorageMigrator} from './sqlite-migrator';
 
-export interface SQLiteSessionStorageOptions
-  extends RdbmsSessionStorageOptions {}
+export interface SQLiteSessionStorageOptions extends RdbmsSessionStorageOptions {}
 
 const defaultSQLiteSessionStorageOptions: SQLiteSessionStorageOptions = {
   sessionTableName: 'shopify_sessions',
@@ -47,9 +46,9 @@ export class SQLiteSessionStorage implements SessionStorage {
 
     // Note milliseconds to seconds conversion for `expires` property
     const entries = session
-      .toPropertyArray()
+      .toPropertyArray(true)
       .map(([key, value]) =>
-        key === 'expires'
+        key === 'expires' || key === 'refreshTokenExpires'
           ? [key, Math.floor((value as number) / 1000)]
           : [key, value],
       );
@@ -132,7 +131,16 @@ export class SQLiteSessionStorage implements SessionStorage {
           expires integer,
           scope varchar(1024),
           accessToken varchar(255),
-          onlineAccessInfo varchar(255)
+          userId integer,
+          firstName varchar(255),
+          lastName varchar(255),
+          email varchar(255),
+          accountOwner integer,
+          locale varchar(255),
+          collaborator integer,
+          emailVerified integer,
+          refreshToken varchar(255),
+          refreshTokenExpires integer
         );
       `;
       await this.db.query(query);
@@ -142,6 +150,7 @@ export class SQLiteSessionStorage implements SessionStorage {
   private databaseRowToSession(row: any): Session {
     // convert seconds to milliseconds prior to creating Session object
     if (row.expires) row.expires *= 1000;
-    return Session.fromPropertyArray(Object.entries(row));
+    if (row.refreshTokenExpires) row.refreshTokenExpires *= 1000;
+    return Session.fromPropertyArray(Object.entries(row), true);
   }
 }

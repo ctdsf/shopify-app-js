@@ -1,12 +1,11 @@
-import {useContext} from 'react';
+import {forwardRef, useContext} from 'react';
 
 import {AppProxyProviderContext} from '../AppProxyProvider';
 
-export interface AppProxyLinkProps
-  extends React.DetailedHTMLProps<
-    React.AnchorHTMLAttributes<HTMLAnchorElement>,
-    HTMLAnchorElement
-  > {
+export interface AppProxyLinkProps extends React.DetailedHTMLProps<
+  React.AnchorHTMLAttributes<HTMLAnchorElement>,
+  HTMLAnchorElement
+> {
   href: string;
 }
 
@@ -39,21 +38,24 @@ export interface AppProxyLinkProps
  *   );
  * }
  * ```
+ * @publicDocs
  */
-export function AppProxyLink(props: AppProxyLinkProps) {
-  const context = useContext(AppProxyProviderContext);
+export const AppProxyLink = forwardRef<HTMLAnchorElement, AppProxyLinkProps>(
+  function AppProxyLink(props, ref) {
+    const context = useContext(AppProxyProviderContext);
 
-  if (!context) {
-    throw new Error(
-      'AppProxyLink must be used within an AppProxyProvider component',
+    if (!context) {
+      throw new Error(
+        'AppProxyLink must be used within an AppProxyProvider component',
+      );
+    }
+
+    const {children, href, ...otherProps} = props;
+
+    return (
+      <a href={context.formatUrl(href)} {...otherProps} ref={ref}>
+        {children}
+      </a>
     );
-  }
-
-  const {children, href, ...otherProps} = props;
-
-  return (
-    <a href={context.formatUrl(href)} {...otherProps}>
-      {children}
-    </a>
-  );
-}
+  },
+);
